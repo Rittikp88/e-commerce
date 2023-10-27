@@ -34,12 +34,12 @@ const Profile = () => {
           {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
         </p>
         <p>
-          <strong>Id:</strong> {currentUser.id}
+          <strong>Idsdfdf:</strong> {currentUser.id}
         </p>
         <p>
-          <strong>Email:</strong> {currentUser.email}
+          <strong>Emailsdf:</strong> {currentUser.email}
         </p>
-        <strong>Authorities:</strong>
+        <strong>Authoritiesmbn:</strong>
         <ul>
           {currentUser.roles &&
             currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
