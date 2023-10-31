@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
+import axios from "axios";
 
 import AuthService from "../Auth/auth.service";
 
@@ -72,6 +73,27 @@ export const login = createAsyncThunk<{ user: lUser }, lUser>(
   }
 );
 
+
+export const loadUser = createAsyncThunk(
+  "auth/loadUser",
+  async (thunkAPI) => {
+    try {
+      const data = await axios.get('http://localhost:8000/api/v1/users/me')
+      console.log("loaduser", data)
+      return { user: data };
+    } catch (error: any) {
+      // const message =
+      //   (error.response &&
+      //     error.response.data &&
+      //     error.response.data.message) ||
+      //   error.message ||
+      //   error.toString();
+      // thunkAPI.dispatch(setMessage(message));
+      // return thunkAPI.rejectWithValue({ errorMessage: message });
+    }
+  }
+);
+
 // function add<T, Y>(a: T, b: Y) {
 //   return undefined;
 // }
@@ -109,6 +131,14 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
         state.user = null;
+      })
+      .addCase(loadUser.fulfilled, (state:any, action) => {
+        state.isLoggedIn = true;
+        state.user = action.payload;
+      })
+      .addCase(loadUser.rejected, (state:any, action) => {
+        state.status = "failed";
+        
       });
   },
 });

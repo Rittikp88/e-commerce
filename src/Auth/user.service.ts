@@ -7,6 +7,20 @@ const getPublicContent = () => {
     return axios.get(API_URL + "all");
   };
 
+  const getAllProducts = async () => {
+
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/users/products');
+      console.log(response);
+      
+    return response.data;
+    }catch (error) {
+      console.error("Axios error:", error);
+      throw error;
+  }
+    
+    };
+
 const getUserBoard = () => {
     return axios.get(API_URL + "user", { headers: authHeader() });
   };
@@ -25,6 +39,7 @@ const getUserBoard = () => {
 
   const userService = {
     getPublicContent,
+    getAllProducts,
     getUserBoard,
     getSuperAdminBoard,
     getAdminBoard,

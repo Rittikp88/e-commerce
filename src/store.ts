@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux'
 import authReducer from "./slices/auth";
 import messageReducer from "./slices/message";
+import productReducer from "./slices/products"
 
 const reducer = {
   auth: authReducer,
-  message: messageReducer
+  message: messageReducer,
+  products: productReducer
 }
 
 const store = configureStore({

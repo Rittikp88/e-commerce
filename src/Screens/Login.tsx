@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import { login } from "../slices/auth";
 // import './Login.css';
 import { clearMessage } from "../slices/message";
@@ -62,6 +62,11 @@ const Login = () => {
         setLoading(false);
       });
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/profile" />;
+  }
+
   return (
     <div className="col-md-12 Login-form">
       <div>
@@ -103,6 +108,10 @@ const Login = () => {
                 )}
                 <span>Login</span>
               </button>
+
+              <Link className="productCard" to={`/signup`}>
+                <span>Sign-up</span>
+              </Link>
             </div>
           </Form>
        )}
