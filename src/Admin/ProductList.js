@@ -10,6 +10,7 @@ import MetaData from "../components/layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
+import { deleteProduct } from "../slices/products";
 // import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 
 const ProductList = () => {
@@ -20,85 +21,22 @@ const ProductList = () => {
   const { error, products } = useSelector((state) => state.products);
   console.log(products);
 
-//   const { error: deleteError, isDeleted } = useSelector(
-//     (state) => state.product
-//   );
+  // const { error: deleteError, isDeleted } = useSelector(
+  //   (state) => state.status
+  // );
 
-//   const deleteProductHandler = (id) => {
-//     dispatch(deleteProduct(id));
-//   };
+  const deleteProductHandler = (id) => {
+    console.log(id)
+    dispatch(deleteProduct(id));
+    window.location.reload();
+
+  };
 
   useEffect(() => {
-//     // if (error) {
-//     //   alert.error(error);
-//     //   dispatch(clearErrors());
-//     // }
-
-//     // if (deleteError) {
-//     //   alert.error(deleteError);
-//     //   dispatch(clearErrors());
-//     // }
-
-//     // if (isDeleted) {
-//     //   alert.success("Product Deleted Successfully");
-//     //   history.push("/admin/dashboard");
-//     //   dispatch({ type: DELETE_PRODUCT_RESET });
-//     // }
 
     dispatch(getAdminProduct());
   }, [dispatch,]);
 
-  // const columns = [
-  //   { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
-
-  //   {
-  //     field: "name",
-  //     headerName: "Name",
-  //     minWidth: 350,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: "stock",
-  //     headerName: "Stock",
-  //     type: "number",
-  //     minWidth: 150,
-  //     flex: 0.3,
-  //   },
-
-  //   {
-  //     field: "price",
-  //     headerName: "Price",
-  //     type: "number",
-  //     minWidth: 270,
-  //     flex: 0.5,
-  //   },
-
-  //   {
-  //     field: "actions",
-  //     flex: 0.3,
-  //     headerName: "Actions",
-  //     minWidth: 150,
-  //     type: "number",
-  //     sortable: false,
-  //     renderCell: (params) => {
-  //       return (
-  //         <Fragment>
-  //           {/* <Link to={`/admin/product/${params.getValue(params.id, "id")}`}> */}
-  //             <EditIcon />
-  //           {/* </Link> */}
-
-  //           <Button
-  //           //   onClick={() =>
-  //           //     deleteProductHandler(params.getValue(params.id, "id"))
-  //           //   }
-  //           >
-  //             <DeleteIcon />
-  //           </Button>
-  //         </Fragment>
-  //       );
-  //     },
-  //   },
-  // ];
 
   const rows = [];
 
@@ -143,7 +81,7 @@ const ProductList = () => {
                       <Link to={`/admin/product/${row.id}`}>
                         <EditIcon />
                       </Link>
-                      <Button>
+                      <Button onClick={() => deleteProductHandler(row.id)}>
                         <DeleteIcon />
                       </Button>
                     </TableCell>

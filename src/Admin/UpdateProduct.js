@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../slices/auth";
-import { createProduct } from "../slices/products";
+import { createProduct, getProductDetails } from "../slices/products";
 import { clearMessage } from "../slices/message";
 import { Formik, Field, Form, ErrorMessage, FormikProps } from "formik";
 import * as Yup from "yup";
 import { AppDispatch } from "../store";
 import "./newProduct.css";
 
-const NewProduct = () => {
+const UpdateProduct = () => {
   const categories = [
     "Laptop",
     "Footwear",
@@ -19,10 +19,19 @@ const NewProduct = () => {
     "SmartPhones",
   ];
 
-  const { status } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
-
   const dispatch = useDispatch();
+  const { error, products } = useSelector((state) => state.products);
+
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [Stock, setStock] = useState(0);
+  const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
+  const [imagesPreview, setImagesPreview] = useState([]);
+
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This field is required!"),
@@ -34,12 +43,7 @@ const NewProduct = () => {
   const handleLogin = (formValue) => {
     const { name, price, category, stock } = formValue;
     dispatch(
-      createProduct({
-        name,
-        price,
-        category,
-        stock,
-      })
+      getProductDetails('6538a40a78c7f19631ef9b76')
     )
       .unwrap()
       .then(() => {
@@ -136,4 +140,4 @@ const NewProduct = () => {
   );
 };
 
-export default NewProduct;
+export default UpdateProduct;

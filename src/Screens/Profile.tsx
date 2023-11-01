@@ -3,16 +3,16 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 const Profile = () => {
-  const { isLoggedIn,user } = useSelector((state:any) => state.auth);
+  const { isLoggedIn, user } = useSelector((state: any) => state.auth);
   if (!user) {
     return <Navigate to="/login" />;
   }
 
 
-  const {name, email, role, _id} = user?.user.user
-  
-   console.log(user.user.user)
- 
+  const { name, email, role, _id } = user?.user?.user || {};
+
+  console.log(user.user.user)
+
   return (
     <div className="container">
       <header className="jumbotron">
@@ -35,7 +35,7 @@ const Profile = () => {
         {/* {role &&
           role.map((role: string, index:number) => <li key={index}>{role}</li>)} */}
 
-          {role}
+        {role}
       </ul>
     </div>
   );

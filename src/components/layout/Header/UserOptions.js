@@ -13,11 +13,11 @@ import { logout } from "../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 const UserOptions = ({ user }) => {
-//   const { cartItems } = useSelector((state) => state.cart);
+  //   const { cartItems } = useSelector((state) => state.cart);
 
   const [open, setOpen] = useState(false);
   const history = useNavigate();
-//   const alert = useAlert();
+  //   const alert = useAlert();
   const dispatch = useDispatch();
 
   const options = [
@@ -35,7 +35,7 @@ const UserOptions = ({ user }) => {
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
   ];
 
-  if (user?.user.user.role === "admin") {
+  if (user?.user?.user?.role === "admin") {
     options.unshift({
       icon: <DashboardIcon />,
       name: "Dashboard",
@@ -72,19 +72,13 @@ const UserOptions = ({ user }) => {
         open={open}
         direction="down"
         className="speedDial"
-        icon={
-          <img
-            className="speedDialIcon"
-            src={""}
-            alt="Profile"
-          />
-        }
+        icon={<img className="speedDialIcon" src={""} alt="Profile" />}
       >
         {options.map((item) => (
           <SpeedDialAction
-            key={item.name}
+            key={item?.name}
             icon={item.icon}
-            tooltipTitle={item.name}
+            tooltipTitle={item?.name}
             onClick={item.func}
             tooltipOpen={window.innerWidth <= 600 ? true : false}
           />
