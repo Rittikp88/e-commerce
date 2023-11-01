@@ -48,13 +48,9 @@ const register = async ({name, email, password, confirmPassword} : IUser) => {
     }
 };
 
-const loadUser = async() => {
-    try {
-        const response = await axio
-    }
-}
 const logout = () => {
     localStorage.removeItem("user");
+    return true;
   };
 
   const authService = {

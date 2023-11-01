@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction, isRejectedWithValue } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import axios from "axios";
 
@@ -73,23 +73,43 @@ export const login = createAsyncThunk<{ user: lUser }, lUser>(
   }
 );
 
-
 export const loadUser = createAsyncThunk(
   "auth/loadUser",
   async (thunkAPI) => {
+    // Define a type for the data you expect to retrieve from localStorage
+    interface UserData {
+      token: string;
+      // Add other properties you expect to retrieve
+    }
+
+
     try {
-      const data = await axios.get('http://localhost:8000/api/v1/users/me')
-      console.log("loaduser", data)
-      return { user: data };
+
+    // Retrieve the user data from localStorage
+    const userString = localStorage.getItem('user');
+    const user: UserData | null = userString ? JSON.parse(userString) : null;
+
+    
+    
+      
+      console.log("function called");
+      // if (user) {
+        // console.log("user", user.token)
+
+        const { data } = await axios.get('http://localhost:8000/api/v1/users/me', {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("loaduser", data.user);
+        return { user: data };
+      // }
     } catch (error: any) {
-      // const message =
-      //   (error.response &&
-      //     error.response.data &&
-      //     error.response.data.message) ||
-      //   error.message ||
-      //   error.toString();
-      // thunkAPI.dispatch(setMessage(message));
-      // return thunkAPI.rejectWithValue({ errorMessage: message });
+      
+      // Handle the error as needed
+      throw error; 
     }
   }
 );
@@ -128,15 +148,16 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.user = null;
       })
-      .addCase(logout.fulfilled, (state) => {
-        state.isLoggedIn = false;
-        state.user = null;
-      })
+      // .addCase(logout.fulfilled, (state) => {
+      //   state.isLoggedIn = false;
+      //   state.user = null;
+      // })
       .addCase(loadUser.fulfilled, (state:any, action) => {
         state.isLoggedIn = true;
         state.user = action.payload;
       })
       .addCase(loadUser.rejected, (state:any, action) => {
+        state.isLoggedIn = false;
         state.status = "failed";
         
       });

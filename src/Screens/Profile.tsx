@@ -2,52 +2,43 @@ import React from "react";
 import { Navigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
-type RootState = {
-    auth: {
-      user: {
-        // username: string;
-        // accessToken: string;
-        _id: string;
-        password: string;
-        // roles: string[];
-      };
-    };
-    // Add other slices and their state properties as needed
-  };
-
 const Profile = () => {
-    const { user: currentUser } = useSelector((state: RootState) => state.auth);
-    console.log(currentUser)
+  const { isLoggedIn,user } = useSelector((state:any) => state.auth);
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+
+  const {name, email, role, _id} = user?.user.user
   
-    if (!currentUser) {
-      return <Navigate to="/login" />;
-    }
-    const {password } = currentUser
-  
-    return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.password}</strong> Profile
-          </h3>
-        </header>
-        {/* <p> */}
-          {/* <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Idsdfdf:</strong> {currentUser.id}
-        </p>
-        <p>
-          <strong>Emailsdf:</strong> {currentUser.email}
-        </p>
-        <strong>Authoritiesmbn:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul> */}
-      </div>
-    );
-  };
-  
-  export default Profile;
+   console.log(user.user.user)
+ 
+  return (
+    <div className="container">
+      <header className="jumbotron">
+        <h3>
+          <strong>{name}</strong> Profile
+        </h3>
+      </header>
+      <p>
+        {/* <strong>Token:</strong> {user.accessToken.substring(0, 20)} ...{" "}
+        {user.accessToken.substr(user.accessToken.length - 20)} */}
+      </p>
+      <p>
+        <strong>Id:</strong> {_id}
+      </p>
+      <p>
+        <strong>Email:</strong> {email}
+      </p>
+      <strong>Authorities:</strong>
+      <ul>
+        {/* {role &&
+          role.map((role: string, index:number) => <li key={index}>{role}</li>)} */}
+
+          {role}
+      </ul>
+    </div>
+  );
+};
+
+export default Profile;

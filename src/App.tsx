@@ -20,17 +20,27 @@ import ProductDetails from "./components/Product/ProductDetails";
 import Profile from "./Screens/Profile";
 import store from "./store";
 import { loadUser } from "./slices/auth";
+import Dashboard from "./Admin/Dashboard";
+import UserOptions from "./components/layout/Header/UserOptions";
+import ProductList from "./Admin/ProductList";
+import NewProduct from "./Admin/NewProduct";
 
 
  function App(){
+
+  const { isLoggedIn,user } = useSelector((state: any) => state.auth);
+  console.log(isLoggedIn, user)
   useEffect(()=>{
 
     store.dispatch(loadUser());
+    
 
   },[]);
   return (
     <Router>
       <Header />
+
+      {isLoggedIn && <UserOptions user = {user}/>}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -38,6 +48,9 @@ import { loadUser } from "./slices/auth";
         <Route path="/login" element = {<Login />}/>
         <Route path="/signup" element = {<Register />}/>
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin/dashboard" element={<Dashboard/>} />
+        <Route path="/admin/products" element={<ProductList/>} />
+        <Route path="/admin/products" element={<NewProduct/>} />
         {/* Define other routes here */}
       </Routes>
 

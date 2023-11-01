@@ -21,6 +21,49 @@ const getPublicContent = () => {
     
     };
 
+    const createProduct = async () => {
+      try {
+        const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+
+    const response = await axios.post('http://localhost:8000/api/v1/users/admin/products/new', {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+            "Content-Type": "application/json",
+          },
+          
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Axios error:", error);
+        throw error;
+    }
+    }
+
+
+    const getAdminProducts = async () => {
+
+
+      try {
+        // Retrieve the user data from localStorage
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
+        const response = await axios.get('http://localhost:8000/api/v1/users/admin/products', {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.data.products);
+        
+      return response.data;
+      }catch (error) {
+        console.error("Axios error:", error);
+        throw error;
+    }
+      
+      };
+
 const getUserBoard = () => {
     return axios.get(API_URL + "user", { headers: authHeader() });
   };
@@ -40,6 +83,8 @@ const getUserBoard = () => {
   const userService = {
     getPublicContent,
     getAllProducts,
+    getAdminProducts,
+    createProduct,
     getUserBoard,
     getSuperAdminBoard,
     getAdminBoard,
