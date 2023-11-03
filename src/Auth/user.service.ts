@@ -9,15 +9,22 @@ interface IProduct {
   category: string;
   stock: string;
 }
+interface UProduct {
+  name: string;
+  price: number;
+  category: string;
+  stock: string;
+  id: string
+}
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
 
-const getAllProducts = async () => {
+const getAllProducts = async ( keyword ="") => {
   try {
     const response = await axios.get(
-      "http://localhost:8000/api/v1/users/products"
+      `http://localhost:8000/api/v1/users/products?keyword=${keyword}`
     );
     console.log(response);
 
@@ -92,13 +99,15 @@ const deleteProduct = async (id : any) => {
   
 };
 
-const updateProduct = async (id : any) => {
+const updateProduct = async ({ name, price, category, stock, id }: UProduct) => {
   try{
 
     const userString = localStorage.getItem("user");
     const user = userString ? JSON.parse(userString) : null;
-    console.log("dubara dedo",id)
-    const {data} = await axios.put(`http://localhost:8000/api/v1/users/product/${id}`,{
+    // console.log("dubara dedo",id)
+    const {data} = await axios.put(`http://localhost:8000/api/v1/users/product/${id}`,
+    { name, price, category, stock },
+    {
       headers: {
         Authorization: `Bearer ${user?.token}`,
         "Content-Type": "application/json",

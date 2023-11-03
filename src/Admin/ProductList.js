@@ -1,10 +1,19 @@
 import React, { Fragment, useEffect } from "react";
 import "./productList.css";
 import { useSelector, useDispatch } from "react-redux";
-import {getAdminProduct} from '../slices/products';
+import { getAdminProduct } from "../slices/products";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@material-ui/core";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@material-ui/core";
 // import { Button } from "@material-ui/core";
 import MetaData from "../components/layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
@@ -16,7 +25,7 @@ import { deleteProduct } from "../slices/products";
 const ProductList = () => {
   const dispatch = useDispatch();
 
-//   const alert = useAlert();
+  //   const alert = useAlert();
 
   const { error, products } = useSelector((state) => state.products);
   console.log(products);
@@ -26,17 +35,14 @@ const ProductList = () => {
   // );
 
   const deleteProductHandler = (id) => {
-    console.log(id)
+    console.log(id);
     dispatch(deleteProduct(id));
     window.location.reload();
-
   };
 
   useEffect(() => {
-
     dispatch(getAdminProduct());
-  }, [dispatch,]);
-
+  }, [dispatch]);
 
   const rows = [];
 
@@ -49,7 +55,7 @@ const ProductList = () => {
         name: item.name,
       });
     });
-    console.log('row',rows);
+  console.log("row", rows);
 
   return (
     <Fragment>
@@ -78,7 +84,10 @@ const ProductList = () => {
                     <TableCell>{row.stock}</TableCell>
                     <TableCell>{row.price}</TableCell>
                     <TableCell>
-                      <Link to={`/admin/product/${row.id}`}>
+                      <Link
+                        to={`/admin/product/${row.id}`}
+                        state={{ productData: row }}
+                      >
                         <EditIcon />
                       </Link>
                       <Button onClick={() => deleteProductHandler(row.id)}>
@@ -90,7 +99,6 @@ const ProductList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-
         </div>
       </div>
     </Fragment>

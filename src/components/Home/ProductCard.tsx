@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 // import { Rating } from "@material-ui/lab";
 
 
-const Product = ({ product }: any) => {
+const ProductCard = ({ product }: any) => {
     const options = {
         value: product.ratings,
         readOnly: true,
         precision: 0.5,
       };
       return (
-        <Link className="productCard" to={`/product/${product._id}`}>
+        <Link className="productCard" to={`/product/${product._id}`} state={{ productData: product }}>
           <img src="https://cdn.pixabay.com/photo/2016/12/06/09/30/blank-1886001_640.png" alt={product.name} />
           <p>{product.name}</p>
           <div>
@@ -25,4 +25,4 @@ const Product = ({ product }: any) => {
       );
 }
 
-export default Product
+export default ProductCard;

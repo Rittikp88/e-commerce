@@ -25,6 +25,8 @@ import UserOptions from "./components/layout/Header/UserOptions";
 import ProductList from "./Admin/ProductList";
 import NewProduct from "./Admin/NewProduct";
 import UpdateProduct from "./Admin/UpdateProduct";
+import Products from "./components/Product/Products";
+import Search from "./components/Product/Search";
 
 
 function App() {
@@ -45,14 +47,16 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="product/:id" element={<ProductDetails />} />
+        <Route path="product/:id" element={<ProductDetails match={undefined} />} />
+        <Route path="/products" element = {<Products />} />
+        <Route path="/search" element = {<Search />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/products" element={<ProductList />} />
         <Route path="/admin/products/create" element={<NewProduct />} />
-        <Route path="/admin/products/:id" element={<UpdateProduct />} />
+        <Route path="/admin/product/:id" element={<UpdateProduct />} />
         {/* Define other routes here */}
       </Routes>
 

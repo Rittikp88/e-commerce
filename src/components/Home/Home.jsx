@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import {MdAccountCircle} from "react-icons/md";
 import "./Home.css";
-import Product from "./Product";
+import Product from "./ProductCard";
 import {fetchProducts} from "../../slices/products";
 import { useSelector, useDispatch } from "react-redux";
 // import ProductCard from "./ProductCard.js";

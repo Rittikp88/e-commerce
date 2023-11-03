@@ -15,11 +15,18 @@ interface Product {
   category: string;
   stock: string;
 }
+interface UProduct {
+  name: string;
+  price: number;
+  category: string;
+  stock: string;
+  id: string
+}
 
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+export const fetchProducts = createAsyncThunk<any , string>('products/fetchProducts', async (keyword="") => {
     try {
-        const response = await userService.getAllProducts();
+        const response = await userService.getAllProducts(keyword);
         const data = await response.product;
         console.log(data)
     return data;
@@ -104,11 +111,13 @@ export const getAdminProduct = createAsyncThunk('products/AdminProducts', async 
     }
   );
 
-  export const updateProduct = createAsyncThunk<any, Product>(
-    "auth/createProduct",
-    async ({ name, price, category, stock }, thunkAPI) => {
+  export const EditProduct = createAsyncThunk<any, UProduct>(
+    "auth/updateProduct",
+    async ({ name, price, category, stock ,id }, thunkAPI) => {
       try {
-        const response = await userService.createProduct({ name, price, category, stock });
+        console.log("dedo",price)
+
+        const response = await userService.updateProduct({ name, price, category, stock, id});
         thunkAPI.dispatch(setMessage(response.data.message));
         return response.data;
       } catch (error: any) {

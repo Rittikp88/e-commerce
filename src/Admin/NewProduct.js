@@ -17,6 +17,7 @@ const NewProduct = () => {
     "Attire",
     "Camera",
     "SmartPhones",
+    "Clothes"
   ];
 
   const { status } = useSelector((state) => state.auth);
@@ -43,11 +44,14 @@ const NewProduct = () => {
     )
       .unwrap()
       .then(() => {
-        window.location.reload();
+        // alert("Product Created Successfully")
+        
       })
       .catch(() => {
         // Handle errors here
       });
+      alert("Product Created Successfully")
+      window.location.reload();
   };
 
   return (

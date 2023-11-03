@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../slices/auth";
-import { createProduct, getProductDetails } from "../slices/products";
+import {
+  EditProduct,
+  createProduct,
+  getProductDetails,
+} from "../slices/products";
 import { clearMessage } from "../slices/message";
 import { Formik, Field, Form, ErrorMessage, FormikProps } from "formik";
 import * as Yup from "yup";
 import { AppDispatch } from "../store";
 import "./newProduct.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const UpdateProduct = () => {
+  const { state } = useLocation();
+  const productData = state && state.productData;
+
+  // console.log("productData", productData);
+
+  const id = productData?.id;
+
   const categories = [
     "Laptop",
     "Footwear",
@@ -19,19 +31,24 @@ const UpdateProduct = () => {
     "SmartPhones",
   ];
 
+  const verify = [
+    "Verified",
+    "Rejected"
+  ];
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { error, products } = useSelector((state) => state.products);
 
-
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [name, setName] = useState(productData?.name);
+  const [price, setPrice] = useState(productData?.price);
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [Stock, setStock] = useState(0);
+  const [category, setCategory] = useState(productData?.category);
+  const [Stock, setStock] = useState(productData?.stock);
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
-
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This field is required!"),
@@ -40,15 +57,16 @@ const UpdateProduct = () => {
     stock: Yup.number().required("This field is required"),
   });
 
-  const handleLogin = (formValue) => {
+  const updateProduct = (formValue) => {
+    console.log("sjhmgjfgdsfbsdbfhjds");
     const { name, price, category, stock } = formValue;
-    dispatch(
-      getProductDetails('6538a40a78c7f19631ef9b76')
-    )
-      .unwrap()
+
+    dispatch(EditProduct({ name, price, category, stock, id }))
       .then(() => {
-        window.location.reload();
+        alert("update Successfully");
+        navigate("admin/products");
       })
+      .unwrap()
       .catch(() => {
         // Handle errors here
       });
@@ -59,14 +77,14 @@ const UpdateProduct = () => {
       <div className="center-form">
         <Formik
           initialValues={{
-            name: "",
-            price: 0,
-            category: "",
-            stock: 0,
-            image: "",
+            name: productData?.name,
+            price: productData?.price,
+            category: "Laptop",
+            stock: productData?.stock,
+            // image: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={handleLogin}
+          onSubmit={updateProduct}
         >
           {(props) => (
             <Form className="custom-form">
@@ -96,8 +114,24 @@ const UpdateProduct = () => {
               <div className="form-group">
                 <label htmlFor="category">Category</label>
                 <Field name="category" as="select" className="form-control">
-                  <option value="">Select a category</option>
+                  {/* <option value="">Select a category</option> */}
                   {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="error-message"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="category">Category</label>
+                <Field name="category" as="select" className="form-control">
+                  {/* <option value="">Select a category</option> */}
+                  {verify.map((category) => (
                     <option key={category} value={category}>
                       {category}
                     </option>
@@ -118,7 +152,7 @@ const UpdateProduct = () => {
                   className="error-message"
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="image">Image</label>
                 <Field name="image" type="text" className="form-control" />
                 <ErrorMessage
@@ -126,10 +160,10 @@ const UpdateProduct = () => {
                   component="div"
                   className="error-message"
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <button type="submit" className="btn btn-primary btn-block">
-                  <span>create product</span>
+                  <span>update product</span>
                 </button>
               </div>
             </Form>
