@@ -21,10 +21,10 @@ const getPublicContent = () => {
   return axios.get(API_URL + "all");
 };
 
-const getAllProducts = async ( keyword ="") => {
+const getAllProducts = async ( keyword ="",currentPage=1, price = [0,25000],ratings=0) => {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/users/products?keyword=${keyword}`
+      `http://localhost:8000/api/v1/users/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
     );
     console.log(response);
 

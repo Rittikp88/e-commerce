@@ -27,6 +27,7 @@ import NewProduct from "./Admin/NewProduct";
 import UpdateProduct from "./Admin/UpdateProduct";
 import Products from "./components/Product/Products";
 import Search from "./components/Product/Search";
+import Cart from "./components/Cart/Cart";
 
 
 function App() {
@@ -49,7 +50,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="product/:id" element={<ProductDetails match={undefined} />} />
         <Route path="/products" element = {<Products />} />
+        <Route path="/products/:keyword" element = {<Products />} />
         <Route path="/search" element = {<Search />} />
+        <Route path="/cart" element = {<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/profile" element={<Profile />} />

@@ -7,6 +7,8 @@ import { clearMessage } from "../slices/message";
 import { Formik, Field, Form, ErrorMessage, FormikProps } from "formik";
 import * as Yup from "yup";
 import { AppDispatch } from "../store";
+// import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface lUser {
   email: string;
@@ -24,14 +26,20 @@ interface RootState {
 }
 
 const Login = () => {
-  // let navigate = useNavigate();
+  let navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.auth);
   const { message } = useSelector((state: RootState) => state.message);
   const dispatch = useDispatch<AppDispatch>();
+
+  const redirect = location.search ? location.search.split("=")[1] : "/profile";
   useEffect(() => {
     dispatch(clearMessage());
-  }, [dispatch]);
+    if (isLoggedIn) {
+       navigate(redirect)
+    }
+  }, [dispatch,redirect,isLoggedIn]);
   // const initialValues = {
   //   email: "mnssdvbnsdvan",
   //   password: "",
@@ -62,10 +70,6 @@ const Login = () => {
         setLoading(false);
       });
   };
-
-  if (isLoggedIn) {
-    return <Navigate to="/profile" />;
-  }
 
   return (
     <div className="col-md-12 Login-form">

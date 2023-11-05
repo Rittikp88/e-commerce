@@ -24,10 +24,10 @@ interface UProduct {
 }
 
 
-export const fetchProducts = createAsyncThunk<any , string>('products/fetchProducts', async (keyword="") => {
+export const fetchProducts = createAsyncThunk<any , any>('products/fetchProducts', async ({keyword="",currentPage = 1, price = [0, 25000]}) => {
     try {
-        const response = await userService.getAllProducts(keyword);
-        const data = await response.product;
+        const response = await userService.getAllProducts(keyword,currentPage, price);
+        const data = await response;
         console.log(data)
     return data;
   }catch (error: any) {
@@ -158,9 +158,12 @@ export const getAdminProduct = createAsyncThunk('products/AdminProducts', async 
         .addCase(fetchProducts.pending, (state) => {
           state.status = 'loading';
         })
-        .addCase(fetchProducts.fulfilled, (state, action) => {
+        .addCase(fetchProducts.fulfilled, (state:any, action) => {
           state.status = 'succeeded';
-          state.products = action.payload;
+          state.products = action.payload.products;
+          state.resultPerPage  = action.payload.resultPerPage;
+          state.productsCount  = action.payload.productsCount;          
+          state.filteredProductsCount  = action.payload.filteredProductsCount;          
         })
         .addCase(fetchProducts.rejected, (state, action) => {
           state.status = 'failed';
